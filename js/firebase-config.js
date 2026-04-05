@@ -12,12 +12,13 @@ import { getStorage }     from "https://www.gstatic.com/firebasejs/10.12.0/fireb
 
 // ★★★ 여기를 본인 Firebase 프로젝트 설정으로 교체하세요 ★★★
 const firebaseConfig = {
-  apiKey:            "YOUR_API_KEY",           // ★ Firebase 콘솔에서 복사
+  apiKey:            "AIzaSyCy3nVHLs-AtvA-vNhXGoQX33de_W_GuWg",
   authDomain:        "dddd-79e68.firebaseapp.com",
   projectId:         "dddd-79e68",
-  storageBucket:     "dddd-79e68.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID", // ★ Firebase 콘솔에서 복사
-  appId:             "YOUR_APP_ID"               // ★ Firebase 콘솔에서 복사
+  storageBucket:     "dddd-79e68.firebasestorage.app",
+  messagingSenderId: "72970755586",
+  appId:             "1:72970755586:web:512a766f67e973985f911b",
+  measurementId:     "G-FHYQR4K8J2"
 };
 // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 
