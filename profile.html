@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KangJooHyuk</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  :root {
+    --bg:       #0a0a0f;
+    --surface:  #111118;
+    --border:   rgba(255,255,255,0.07);
+    --accent:   #7c6ef5;
+    --accent2:  #5ed3f3;
+    --text:     #e8e8f0;
+    --muted:    #6b6b80;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(124,110,245,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 80%, rgba(94,211,243,0.08) 0%, transparent 55%);
+    pointer-events: none; z-index: 0;
+  }
+
+  .wrap {
+    position: relative; z-index: 1;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 80px 24px 100px;
+  }
+
+  /* ── 히어로 ── */
+  .hero {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    margin-bottom: 60px;
+    animation: fadeUp .7s ease both;
+  }
+
+  .avatar {
+    width: 96px; height: 96px; flex-shrink: 0;
+    border-radius: 24px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 40px;
+    box-shadow: 0 0 0 1px rgba(124,110,245,0.4), 0 16px 40px rgba(124,110,245,0.2);
+  }
+
+  .hero-text h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    background: linear-gradient(90deg, #fff 40%, var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-text .role {
+    margin-top: 6px;
+    font-size: 14px;
+    font-family: 'Fira Code', monospace;
+    color: var(--accent);
+    letter-spacing: 0.5px;
+  }
+  .hero-text .role::before { content: '> '; color: var(--accent2); }
+
+  .hero-text .bio {
+    margin-top: 10px;
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── 카드 ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 20px;
+    transition: border-color .25s, transform .25s;
+    animation: fadeUp .7s ease both;
+  }
+  .card:hover {
+    border-color: rgba(124,110,245,0.35);
+    transform: translateY(-2px);
+  }
+
+  .card-label {
+    font-size: 10px;
+    font-family: 'Fira Code', monospace;
+    color: var(--accent2);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── 태그 ── */
+  .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: 'Fira Code', monospace;
+    font-weight: 500;
+    border: 1px solid transparent;
+    cursor: default;
+    transition: all .2s;
+  }
+  .tag:hover { transform: translateY(-2px); }
+  .tag.purple { background:rgba(124,110,245,0.12); border-color:rgba(124,110,245,0.35); color:#a89ef8; }
+  .tag.blue   { background:rgba(94,211,243,0.10);  border-color:rgba(94,211,243,0.3);   color:#7de2f7; }
+  .tag.green  { background:rgba(52,211,153,0.10);  border-color:rgba(52,211,153,0.3);   color:#5ee8b4; }
+  .tag.orange { background:rgba(251,146,60,0.10);  border-color:rgba(251,146,60,0.3);   color:#fba55a; }
+  .tag.pink   { background:rgba(236,72,153,0.10);  border-color:rgba(236,72,153,0.3);   color:#f472b6; }
+
+  /* ── 숙련도 바 ── */
+  .stat-row { display:flex; align-items:center; gap:14px; margin-bottom:14px; }
+  .stat-row:last-child { margin-bottom:0; }
+  .stat-name {
+    font-family:'Fira Code',monospace; font-size:13px;
+    color:var(--muted); width:90px; flex-shrink:0;
+  }
+  .bar-bg {
+    flex:1; height:6px;
+    background:rgba(255,255,255,0.06);
+    border-radius:999px; overflow:hidden;
+  }
+  .bar-fill {
+    height:100%; border-radius:999px;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    width:0; transition:width 1.2s cubic-bezier(.4,0,.2,1);
+  }
+  .stat-pct {
+    font-size:12px; font-family:'Fira Code',monospace;
+    color:var(--muted); width:36px; text-align:right;
+  }
+
+  /* ── 터미널 ── */
+  .terminal { font-family:'Fira Code',monospace; font-size:13.5px; line-height:2; color:#c9d1d9; }
+  .terminal .prompt { color:var(--accent2); }
+  .terminal .cmd    { color:#fff; }
+  .terminal .out    { color:var(--muted); }
+  .terminal .hi     { color:var(--accent); }
+  .terminal .cursor {
+    display:inline-block; width:9px; height:16px;
+    background:var(--accent2); vertical-align:middle;
+    animation:blink .9s step-end infinite;
+  }
+
+  /* ── 애니메이션 ── */
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(20px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  .card:nth-child(1){ animation-delay:.05s }
+  .card:nth-child(2){ animation-delay:.15s }
+  .card:nth-child(3){ animation-delay:.25s }
+  .card:nth-child(4){ animation-delay:.35s }
+
+  /* ── 푸터 ── */
+  .footer {
+    margin-top:48px; text-align:center;
+    font-size:12px; font-family:'Fira Code',monospace;
+    color:var(--muted); animation:fadeUp .7s .5s ease both;
+  }
+  .footer span { color:var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="avatar">👨‍💻</div>
+    <div class="hero-text">
+      <h1>KangJooHyuk</h1>
+      <div class="role">Web Programmer</div>
+      <div class="bio">코딩을 좋아하는 웹 프로그래머</div>
+    </div>
+  </div>
+
+  <!-- whoami -->
+  <div class="card">
+    <div class="card-label">whoami</div>
+    <div class="terminal">
+      <div><span class="prompt">~  $</span> <span class="cmd">cat about.txt</span></div>
+      <div class="out">Name  &nbsp;&nbsp;<span class="hi">KangJooHyuk</span></div>
+      <div class="out">Role  &nbsp;&nbsp;<span class="hi">Web Programmer</span></div>
+      <div class="out">Focus &nbsp;&nbsp;<span class="hi">Building things with code</span></div>
+      <div class="out">Motto &nbsp;&nbsp;<span class="hi">"코드로 세상을 조금씩 바꾼다"</span></div>
+      <div><span class="prompt">~  $</span> <span class="cursor"></span></div>
+    </div>
+  </div>
+
+  <!-- tech stack -->
+  <div class="card">
+    <div class="card-label">tech stack</div>
+    <div class="tags">
+      <span class="tag purple">⚛ React</span>
+      <span class="tag blue">🐍 Python</span>
+      <span class="tag green">🤖 ChatGPT</span>
+      <span class="tag orange">✨ AI</span>
+      <span class="tag pink">⚙ C</span>
+    </div>
+  </div>
+
+  <!-- proficiency -->
+  <div class="card" id="stats-card">
+    <div class="card-label">proficiency</div>
+    <div class="stat-row">
+      <div class="stat-name">React</div>
+      <div class="bar-bg"><div class="bar-fill" data-w="82"></div></div>
+      <div class="stat-pct">82%</div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-name">Python</div>
+      <div class="bar-bg"><div class="bar-fill" data-w="78"></div></div>
+      <div class="stat-pct">78%</div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-name">AI / LLM</div>
+      <div class="bar-bg"><div class="bar-fill" data-w="75"></div></div>
+      <div class="stat-pct">75%</div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-name">C</div>
+      <div class="bar-bg"><div class="bar-fill" data-w="60"></div></div>
+      <div class="stat-pct">60%</div>
+    </div>
+  </div>
+
+  <div class="footer">made with <span>♥</span> by KangJooHyuk &nbsp;·&nbsp; 2025</div>
+</div>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        document.querySelectorAll('.bar-fill').forEach(b => {
+          b.style.width = b.dataset.w + '%';
+        });
+        observer.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+  observer.observe(document.getElementById('stats-card'));
+</script>
+</body>
+</html>
